@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Earthquakes</h1>
+
+<div id="earthquakes">
+  <% @earthquakes.each do |earthquake| %>
+    <%= render earthquake %>
+    <p>
+      <%= link_to "Show this earthquake", earthquake %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New earthquake", new_earthquake_path %>

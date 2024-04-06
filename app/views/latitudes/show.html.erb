@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @latitude %>
+
+<div>
+  <%= link_to "Edit this latitude", edit_latitude_path(@latitude) %> |
+  <%= link_to "Back to latitudes", latitudes_path %>
+
+  <%= button_to "Destroy this latitude", @latitude, method: :delete %>
+</div>
