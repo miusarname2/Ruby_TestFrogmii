@@ -10,21 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_06_161356) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_08_163810) do
+  create_table "comments", force: :cascade do |t|
+    t.integer "feature_id"
+    t.text "body"
+    t.integer "earthquake_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["earthquake_id"], name: "index_comments_on_earthquake_id"
+  end
+
   create_table "earthquakes", force: :cascade do |t|
-    t.decimal "latitude"
-    t.decimal "longitude"
-    t.string "title"
-    t.string "mag_type"
+    t.decimal "latitude", null: false
+    t.decimal "longitude", null: false
+    t.string "title", null: false
+    t.string "mag_type", null: false
     t.boolean "tsunami"
     t.string "time"
-    t.string "place"
+    t.string "place", null: false
     t.decimal "magnitude"
     t.string "externa_id"
     t.string "type"
-    t.string "fakeType"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "comments", "earthquakes"
 end
