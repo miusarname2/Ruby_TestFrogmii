@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:create]
   before_action :set_comment, only: %i[ show edit update destroy ]
 
   # GET /comments or /comments.json
@@ -22,6 +23,13 @@ class CommentsController < ApplicationController
   # POST /comments or /comments.json
   def create
     @comment = Comment.new(comment_params)
+    begin
+      @comment.save
+    rescue => e
+      # Manejar cualquier otra excepción no especificada
+      puts "Error: Algo salió mal"
+      puts "Mensaje de error: #{e.message}"
+    end
 
     respond_to do |format|
       if @comment.save
@@ -31,6 +39,7 @@ class CommentsController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
+
     end
   end
 
