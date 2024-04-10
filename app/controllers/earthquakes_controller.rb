@@ -11,14 +11,158 @@ class EarthquakesController < ApplicationController
     if params[:page] && params[:page].to_i > 1
       puts params[:page]
 
-      totalReg = 10*params[:page].to_i
+      # si hay un parametro extra lo toma
 
-      if @earthquakes.count >= totalReg
+      # ["md", "ml", "ms", "mw", "me", "mi", "mb", "mlg"]
+      if params[:mag_type] && (params[:mag_type] == "md" || params[:mag_type] == "ml" || params[:mag_type] == "ms" || params[:mag_type] == "mw" || params[:mag_type] == "me" || params[:mag_type] == "mi" || params[:mag_type] == "mb" || params[:mag_type] == "mlg")
+
+        totalReg = 10*params[:page].to_i
+      mayor=totalReg-1
+      minor=totalReg + 10
+      @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+      if params[:per_page] && (params[:per_page].to_i <= 1000)
+        total = params[:per_page].to_i
+        @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+        if @earthquakes.count >= total
+          @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+          return @earthquakes
+        else
+          base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+          url = "#{base_url}&limit=#{total}"
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          data = JSON.parse(response)
+          test_features = data['features']
+          actual = @earthquakes.count
+
+          test_features.drop(actual).each do |item|
+            puts item['properties']['title']
+
+            if item['properties']['tsunami'] != 0
+              item['properties']['tsunami'] = true
+            else
+              item['properties']['tsunami'] = false
+            end
+
+            Earthquake.create(
+              title: item['properties']['title'],
+              mag_type: item['properties']['magType'],
+              tsunami: item['properties']['tsunami'],
+              time: item['properties']['time'].to_s,
+              place: item['properties']['place'],
+              magnitude: item['properties']['mag'],
+              externa_id: item['id'],
+              type: item['properties']['type'],
+              latitude: item['geometry']['coordinates'][1],
+              longitude: item['geometry']['coordinates'][0]
+            )
+          end
+        end
+      end
+
+        totalReg = 10*params[:page].to_i
+        mayor=totalReg-1
+        minor=totalReg + 10
+        equls=params[:mag_type]
+        @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", mayor).where("id < ?", minor)
+        if @earthquakes.count >= 5
+
+          @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", mayor).where("id < ?", minor)
+          return @earthquakes
+        else
+          base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+          url = "#{base_url}&limit=#{minor}"
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          data = JSON.parse(response)
+          test_features = data['features']
+          actual = @earthquakes.count
+
+          test_features.drop(actual).each do |item|
+            puts item['properties']['title']
+
+            if item['properties']['tsunami'] != 0
+              item['properties']['tsunami'] = true
+            else
+              item['properties']['tsunami'] = false
+            end
+
+            Earthquake.create(
+              title: item['properties']['title'],
+              mag_type: item['properties']['magType'],
+              tsunami: item['properties']['tsunami'],
+              time: item['properties']['time'].to_s,
+              place: item['properties']['place'],
+              magnitude: item['properties']['mag'],
+              externa_id: item['id'],
+              type: item['properties']['type'],
+              latitude: item['geometry']['coordinates'][1],
+              longitude: item['geometry']['coordinates'][0]
+            )
+          end
+
+        end
+      end
+
+      totalReg = 10*params[:page].to_i
+      mayor=totalReg-1
+      minor=totalReg + 10
+      @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+      if params[:per_page] && (params[:per_page].to_i <= 1000)
+        total = params[:per_page].to_i
+        @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+        if @earthquakes.count >= total
+          @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+          return @earthquakes
+        else
+          base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+          url = "#{base_url}&limit=#{total}"
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          data = JSON.parse(response)
+          test_features = data['features']
+          actual = @earthquakes.count
+
+          test_features.drop(actual).each do |item|
+            puts item['properties']['title']
+
+            if item['properties']['tsunami'] != 0
+              item['properties']['tsunami'] = true
+            else
+              item['properties']['tsunami'] = false
+            end
+
+            Earthquake.create(
+              title: item['properties']['title'],
+              mag_type: item['properties']['magType'],
+              tsunami: item['properties']['tsunami'],
+              time: item['properties']['time'].to_s,
+              place: item['properties']['place'],
+              magnitude: item['properties']['mag'],
+              externa_id: item['id'],
+              type: item['properties']['type'],
+              latitude: item['geometry']['coordinates'][1],
+              longitude: item['geometry']['coordinates'][0]
+            )
+          end
+        end
+      end
+
+      #COMPLETED
+      totalReg = 10*params[:page].to_i
+      mayor=totalReg-1
+      minor=totalReg + 10
+      @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+
+      puts @earthquakes.count
+      puts "this is a count"
+
+      if @earthquakes.count >= 10
 
         render :index
       else
         base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
-        url = "#{base_url}&limit=#{totalReg}"
+        url = "#{base_url}&limit=#{minor}"
         uri = URI(url)
         response = Net::HTTP.get(uri)
         data = JSON.parse(response)
@@ -52,11 +196,139 @@ class EarthquakesController < ApplicationController
 
     end
 
-    if @earthquakes.count >= 10
+    if params[:mag_type] && (params[:mag_type] == "md" || params[:mag_type] == "ml" || params[:mag_type] == "ms" || params[:mag_type] == "mw" || params[:mag_type] == "me" || params[:mag_type] == "mi" || params[:mag_type] == "mb" || params[:mag_type] == "mlg")
+      equls=params[:mag_type]
+      @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
 
-      render :index
+      if params[:per_page] && (params[:per_page].to_i <= 1000)
+        total = params[:per_page].to_i
+        if @earthquakes.count >= total
+          @earthquakes = Earthquake.limit(total).where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
+          return @earthquakes
+        else
+          base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+          url = "#{base_url}&limit=#{total}"
+          uri = URI(url)
+          response = Net::HTTP.get(uri)
+          data = JSON.parse(response)
+          test_features = data['features']
+          actual = @earthquakes.count
+
+          test_features.drop(actual).each do |item|
+            puts item['properties']['title']
+
+            if item['properties']['tsunami'] != 0
+              item['properties']['tsunami'] = true
+            else
+              item['properties']['tsunami'] = false
+            end
+
+            Earthquake.create(
+              title: item['properties']['title'],
+              mag_type: item['properties']['magType'],
+              tsunami: item['properties']['tsunami'],
+              time: item['properties']['time'].to_s,
+              place: item['properties']['place'],
+              magnitude: item['properties']['mag'],
+              externa_id: item['id'],
+              type: item['properties']['type'],
+              latitude: item['geometry']['coordinates'][1],
+              longitude: item['geometry']['coordinates'][0]
+            )
+          end
+        end
+      end
+
+      if @earthquakes.count >= 5
+
+        @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
+        return @earthquakes
+      else
+        minor=20
+        base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+        url = "#{base_url}&limit=#{minor}"
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        data = JSON.parse(response)
+        test_features = data['features']
+        actual = @earthquakes.count
+
+        test_features.drop(actual).each do |item|
+          puts item['properties']['title']
+
+          if item['properties']['tsunami'] != 0
+            item['properties']['tsunami'] = true
+          else
+            item['properties']['tsunami'] = false
+          end
+
+          Earthquake.create(
+            title: item['properties']['title'],
+            mag_type: item['properties']['magType'],
+            tsunami: item['properties']['tsunami'],
+            time: item['properties']['time'].to_s,
+            place: item['properties']['place'],
+            magnitude: item['properties']['mag'],
+            externa_id: item['id'],
+            type: item['properties']['type'],
+            latitude: item['geometry']['coordinates'][1],
+            longitude: item['geometry']['coordinates'][0]
+          )
+        end
+
+      end
+    end
+
+    @earthquakes = Earthquake.all
+    if params[:per_page] && (params[:per_page].to_i <= 1000)
+      total = params[:per_page].to_i
+      puts @earthquakes.count
+      if @earthquakes.count >= total
+        puts "passed"
+        @earthquakes = Earthquake.limit(total)
+        return @earthquakes
+      else
+        base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
+        url = "#{base_url}&limit=#{total}"
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        data = JSON.parse(response)
+        test_features = data['features']
+        actual = @earthquakes.count
+
+        test_features.drop(actual).each do |item|
+          puts item['properties']['title']
+
+          if item['properties']['tsunami'] != 0
+            item['properties']['tsunami'] = true
+          else
+            item['properties']['tsunami'] = false
+          end
+
+          Earthquake.create(
+            title: item['properties']['title'],
+            mag_type: item['properties']['magType'],
+            tsunami: item['properties']['tsunami'],
+            time: item['properties']['time'].to_s,
+            place: item['properties']['place'],
+            magnitude: item['properties']['mag'],
+            externa_id: item['id'],
+            type: item['properties']['type'],
+            latitude: item['geometry']['coordinates'][1],
+            longitude: item['geometry']['coordinates'][0]
+          )
+        end
+      end
+    end
+
+    #completed
+    @earthquakes = Earthquake.all
+
+    if @earthquakes.count >= 19
+
+      @earthquakes = Earthquake.where("id < ?", 20)
     else
-      uri = URI('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&starttime=NOW%20-%2030%20days')
+      uri = URI('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=20&starttime=NOW%20-%2030%20days')
       response = Net::HTTP.get(uri)
       data = JSON.parse(response)
       test_features = data['features']
@@ -65,8 +337,9 @@ class EarthquakesController < ApplicationController
       #puts first_fea.inspect
 
       #puts first_fea['properties']['title']
+      actual =@earthquakes.count
 
-      test_features.each do |item|
+      test_features.drop(actual).each do |item|
         puts item['properties']['title']
 
         if item['properties']['tsunami'] != 0
