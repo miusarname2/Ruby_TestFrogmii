@@ -1,24 +1,8 @@
-# README
+# React + Vite
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Things you may want to cover:
+Currently, two official plugins are available:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
