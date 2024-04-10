@@ -17,12 +17,14 @@ class EarthquakesController < ApplicationController
       if params[:mag_type] && (params[:mag_type] == "md" || params[:mag_type] == "ml" || params[:mag_type] == "ms" || params[:mag_type] == "mw" || params[:mag_type] == "me" || params[:mag_type] == "mi" || params[:mag_type] == "mb" || params[:mag_type] == "mlg")
 
         totalReg = 10*params[:page].to_i
-      mayor=totalReg-1
-      minor=totalReg + 10
-      @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+        mayor=totalReg-1
+        minor=totalReg + 10
+        @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+
+
       if params[:per_page] && (params[:per_page].to_i <= 1000)
         total = params[:per_page].to_i
-        @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+        @earthquakes = Earthquake.limit(total).where("id > ?", mayor)
         if @earthquakes.count >= total
           @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
           return @earthquakes
@@ -34,6 +36,7 @@ class EarthquakesController < ApplicationController
           data = JSON.parse(response)
           test_features = data['features']
           actual = @earthquakes.count
+          puts actual
 
           test_features.drop(actual).each do |item|
             puts item['properties']['title']
@@ -57,6 +60,8 @@ class EarthquakesController < ApplicationController
               longitude: item['geometry']['coordinates'][0]
             )
           end
+          @earthquakes = Earthquake.limit(total).where("id > ?", mayor)
+          return @earthquakes
         end
       end
 
@@ -100,19 +105,20 @@ class EarthquakesController < ApplicationController
               longitude: item['geometry']['coordinates'][0]
             )
           end
-
+          @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", mayor).where("id < ?", minor)
+          return @earthquakes
         end
       end
 
       totalReg = 10*params[:page].to_i
       mayor=totalReg-1
       minor=totalReg + 10
-      @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+      @earthquakes = Earthquake.where("id > ?", mayor)
       if params[:per_page] && (params[:per_page].to_i <= 1000)
         total = params[:per_page].to_i
-        @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+        @earthquakes = Earthquake.limit(total).where("id > ?", mayor)
         if @earthquakes.count >= total
-          @earthquakes = Earthquake.limit(total).where("id > ?", mayor).where("id < ?", minor)
+          @earthquakes = Earthquake.limit(total).where("id > ?", mayor)
           return @earthquakes
         else
           base_url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=NOW%20-%2030%20days'
@@ -191,11 +197,13 @@ class EarthquakesController < ApplicationController
             longitude: item['geometry']['coordinates'][0]
           )
         end
-
+        @earthquakes = Earthquake.where("id > ?", mayor).where("id < ?", minor)
+        return @earthquakes
       end
 
     end
 
+    #completed all
     if params[:mag_type] && (params[:mag_type] == "md" || params[:mag_type] == "ml" || params[:mag_type] == "ms" || params[:mag_type] == "mw" || params[:mag_type] == "me" || params[:mag_type] == "mi" || params[:mag_type] == "mb" || params[:mag_type] == "mlg")
       equls=params[:mag_type]
       @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
@@ -236,6 +244,8 @@ class EarthquakesController < ApplicationController
               longitude: item['geometry']['coordinates'][0]
             )
           end
+          @earthquakes = Earthquake.limit(total).where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
+          return @earthquakes
         end
       end
 
@@ -275,7 +285,8 @@ class EarthquakesController < ApplicationController
             longitude: item['geometry']['coordinates'][0]
           )
         end
-
+        @earthquakes = Earthquake.where(mag_type: equls).where("id > ?", 1).where("id < ?", 20)
+        return @earthquakes
       end
     end
 
@@ -318,6 +329,8 @@ class EarthquakesController < ApplicationController
             longitude: item['geometry']['coordinates'][0]
           )
         end
+        @earthquakes = Earthquake.limit(total)
+        return @earthquakes
       end
     end
 
@@ -350,10 +363,9 @@ class EarthquakesController < ApplicationController
 
         Earthquake.create(title: item['properties']['title'],mag_type:item['properties']['magType'],tsunami:item['properties']['tsunami'],time:item['properties']['time'].to_s,place:item['properties']['place'],magnitude:item['properties']['mag'],externa_id:item['id'],type:item['properties']['type'],latitude:item['geometry']['coordinates'][1],longitude:item['geometry']['coordinates'][0] )
       end
-
+      @earthquakes = Earthquake.where("id < ?", 20)
+      return @earthquakes
     end
-
-
   end
 
 
