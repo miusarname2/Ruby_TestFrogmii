@@ -28,3 +28,5 @@ json.pagination do
   json.total @earthquakes.count
   json.per_page 10
 end
+# json.extract! earthquake, :id, :latitude, :longitude, :title, :mag_type, :tsunami, :time, :place, :magnitude, :externa_id, :type, :created_at, :updated_at
+# json.url earthquake_url(earthquake, format: :json)

@@ -9,7 +9,7 @@ class CreateEarthquakes < ActiveRecord::Migration[7.0]
       t.string :time
       t.string :place,:null => false
       t.decimal :magnitude,numericality: { greater_than: -1.0, less_than: 10.0 }
-      t.string :externa_id
+      t.string :externa_id,:unique => true
       t.string :type
 
       t.timestamps
