@@ -1,7 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Nav from './UpNAv'
 
 export default function CommentForm() {
+
+    const sendRequest =(endpoint,datos)=>{
+        const url = endpoint;
+        const opciones = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+        };
+
+        // Enviar la solicitud
+        fetch(url, opciones)
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Hubo un problema al enviar la solicitud.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Respuesta recibida:', data);
+        })
+        .catch(error => {
+            console.log('Error al enviar la solicitud:', error);
+        });
+    }
+
+
+    const sendHandler = (e)=>{
+        e.preventDefault();
+        console.log(e.target[0].value)
+        console.log(e.target[1].value)
+        var dataToSend={
+            body:e.target[1].value,
+            feature_id:Number(e.target[0].value)
+        }
+        sendRequest("http://127.0.0.1:3000/comments",dataToSend)
+        window.location.reload()
+    }
+
   return (
         <div className="w-full flex flex-col h-screen overflow-y-hidden">
         <Nav/>
@@ -16,14 +56,14 @@ export default function CommentForm() {
                             <i className="fas fa-list mr-3"></i> Add Comment
                         </p>
                         <div className="leading-loose">
-                            <form className="p-10 bg-white rounded shadow-xl">
+                            <form className="p-10 bg-white rounded shadow-xl" onSubmit={(e)=>{sendHandler(e)}}>
                                 <div className="">
                                     <label className="block text-sm text-gray-600" htmlFor="feature_id">Feature Id</label>
-                                    <input className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="feature_id" name="feature_id" type="text" required="" placeholder="Your feature_id" aria-label="Name"/>
+                                    <input className="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="feature_id" name="feature_id" type="number" required placeholder="Your feature_id" aria-label="Name"/>
                                 </div>
                                 <div className="mt-2">
                                     <label className=" block text-sm text-gray-600" htmlFor="body">Message</label>
-                                    <textarea className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded" id="body" name="body" rows="6" required="" placeholder="Your inquiry.." aria-label="Email"></textarea>
+                                    <textarea className="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded" id="body" name="body" rows="6" required placeholder="Your inquiry.." aria-label="Email"></textarea>
                                 </div>
                                 <div className="mt-6">
                                     <button className="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded" type="submit">Submit</button>

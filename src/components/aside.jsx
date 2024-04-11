@@ -6,7 +6,7 @@ export default function Aside() {
         <div className="p-6">
             <a href="/" className="text-white text-3xl font-semibold uppercase hover:text-gray-300">Admin</a>
             <button className="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
-                <i className="fas fa-plus mr-3"></i> New Report
+                <i className="fas fa-plus mr-3"></i> New Comment
             </button>
         </div>
         <nav className="text-white text-base font-semibold pt-3">
