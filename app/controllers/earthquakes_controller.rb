@@ -375,10 +375,9 @@ class EarthquakesController < ApplicationController
     end
   end
 
-
-
   # GET /earthquakes/1 or /earthquakes/1.json
   def show
+    render :filtered
   end
 
   # GET /earthquakes/new
