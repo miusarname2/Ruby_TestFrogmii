@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_163810) do
     t.decimal "magnitude"
     t.string "externa_id"
     t.string "type"
+    t.string "external_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
