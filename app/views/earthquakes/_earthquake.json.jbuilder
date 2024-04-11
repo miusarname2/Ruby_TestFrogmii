@@ -12,12 +12,11 @@ json.data do
         json.mag_type earthquake.mag_type
         json.title earthquake.title
         json.coordinates do
-          json.longitude earthquake.longitude
-          json.latitude earthquake.latitude
+          json.array! [earthquake.longitude.to_f, earthquake.latitude.to_f]
         end
       end
       json.links do
-        json.external_url earthquake_url(earthquake, format: :json)
+        json.external_url earthquake.external_url
       end
     end
   end

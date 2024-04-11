@@ -11,6 +11,7 @@ class CreateEarthquakes < ActiveRecord::Migration[7.0]
       t.decimal :magnitude,numericality: { greater_than: -1.0, less_than: 10.0 }
       t.string :externa_id,:unique => true
       t.string :type
+      t.string :external_url
 
       t.timestamps
     end

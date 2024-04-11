@@ -56,6 +56,7 @@ class EarthquakesController < ApplicationController
               magnitude: item['properties']['mag'],
               externa_id: item['id'],
               type: item['properties']['type'],
+              external_url:item['properties']['url'],
               latitude: item['geometry']['coordinates'][1],
               longitude: item['geometry']['coordinates'][0]
             )
@@ -101,6 +102,7 @@ class EarthquakesController < ApplicationController
               magnitude: item['properties']['mag'],
               externa_id: item['id'],
               type: item['properties']['type'],
+              external_url:item['properties']['url'],
               latitude: item['geometry']['coordinates'][1],
               longitude: item['geometry']['coordinates'][0]
             )
@@ -147,6 +149,7 @@ class EarthquakesController < ApplicationController
               magnitude: item['properties']['mag'],
               externa_id: item['id'],
               type: item['properties']['type'],
+              external_url:item['properties']['url'],
               latitude: item['geometry']['coordinates'][1],
               longitude: item['geometry']['coordinates'][0]
             )
@@ -193,6 +196,7 @@ class EarthquakesController < ApplicationController
             magnitude: item['properties']['mag'],
             externa_id: item['id'],
             type: item['properties']['type'],
+            external_url:item['properties']['url'],
             latitude: item['geometry']['coordinates'][1],
             longitude: item['geometry']['coordinates'][0]
           )
@@ -240,6 +244,7 @@ class EarthquakesController < ApplicationController
               magnitude: item['properties']['mag'],
               externa_id: item['id'],
               type: item['properties']['type'],
+              external_url:item['properties']['url'],
               latitude: item['geometry']['coordinates'][1],
               longitude: item['geometry']['coordinates'][0]
             )
@@ -281,6 +286,7 @@ class EarthquakesController < ApplicationController
             magnitude: item['properties']['mag'],
             externa_id: item['id'],
             type: item['properties']['type'],
+            external_url:item['properties']['url'],
             latitude: item['geometry']['coordinates'][1],
             longitude: item['geometry']['coordinates'][0]
           )
@@ -325,6 +331,7 @@ class EarthquakesController < ApplicationController
             magnitude: item['properties']['mag'],
             externa_id: item['id'],
             type: item['properties']['type'],
+            external_url:item['properties']['url'],
             latitude: item['geometry']['coordinates'][1],
             longitude: item['geometry']['coordinates'][0]
           )
@@ -361,7 +368,7 @@ class EarthquakesController < ApplicationController
           item['properties']['tsunami'] = false
         end
 
-        Earthquake.create(title: item['properties']['title'],mag_type:item['properties']['magType'],tsunami:item['properties']['tsunami'],time:item['properties']['time'].to_s,place:item['properties']['place'],magnitude:item['properties']['mag'],externa_id:item['id'],type:item['properties']['type'],latitude:item['geometry']['coordinates'][1],longitude:item['geometry']['coordinates'][0] )
+        Earthquake.create(title: item['properties']['title'],mag_type:item['properties']['magType'],tsunami:item['properties']['tsunami'],time:item['properties']['time'].to_s,place:item['properties']['place'],magnitude:item['properties']['mag'],externa_id:item['id'],type:item['properties']['type'],external_url:item['properties']['url'],latitude:item['geometry']['coordinates'][1],longitude:item['geometry']['coordinates'][0] )
       end
       @earthquakes = Earthquake.where("id < ?", 20)
       return @earthquakes
