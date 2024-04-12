@@ -1,7 +1,23 @@
+
 # Technical Challenge - Seismic Data Application
+
+Hello Oscar Mauricio! Welcome to the technical challenge for our application. Please submit your solution by April 15, 2024.
+
 ## Objectives
 - Develop an application in Ruby or a Ruby-based framework that includes a Task for obtaining and persisting seismic data and an API exposing two endpoints for external client consumption.
 - Develop a simple HTML5 and JavaScript webpage to query the API endpoints. Bonus points for using EmberJS, React, AngularJS, or VueJS frameworks.
+
+## Getting Started
+1. Ensure you have Ruby and the necessary dependencies installed on your system.
+2. Clone this repository to your local machine.
+3. Run migrations to set up the database:
+   ```bash
+   rails db:migrate
+   ```
+4. Start the application server:
+   ```bash
+   rails server
+   ```
 
 ## Backend Development
 ### 1. Obtaining and Persisting Data
@@ -48,3 +64,4 @@ To access the API endpoints:
 
 The frontend for this application was developed in React and is located in the "earthquake-front" branch.
 
+Thank you for participating! We look forward to reviewing your solution.
