@@ -9,7 +9,8 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Permitir la URL especificada en el entorno de desarrollo
-  config.hosts << "ruby-testfrogmii.onrender.com"
+  config.hosts << "https://ruby-testfrogmii.onrender.com"
+  config.hosts << /[a-z0-9]+\.onrender\.com/
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.
   config.cache_classes = true
