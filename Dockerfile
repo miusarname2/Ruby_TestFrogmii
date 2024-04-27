@@ -19,6 +19,7 @@ RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git . && ls
 # Install gems
 RUN gem install bundler && bundle install
 
+
 # Run database migrations
 RUN rails db:migrate
 
