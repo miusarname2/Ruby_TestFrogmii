@@ -4,6 +4,8 @@ FROM ruby:3.1.2
 # Set working directory inside the container
 WORKDIR /app
 
+RUN pwd
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
