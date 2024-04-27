@@ -9,7 +9,6 @@ Rails.application.configure do
     "localhost",                    # The localhost reserved domain.
     "ruby-testfrogmii.onrender.com",
     "https://ruby-testfrogmii.onrender.com"
-    ENV["RAILS_DEVELOPMENT_HOSTS"]  # Additional comma-separated hosts for development.
   ]
 
   # In the development environment your application's code is reloaded any time
