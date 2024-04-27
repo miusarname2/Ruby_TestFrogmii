@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     git
 
+RUN ls
+
 # Clone the Ruby_TestFrogmii project
 RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git .
 
