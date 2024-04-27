@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
 # Clone the Ruby_TestFrogmii project
 RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git . && ls
 
+
 # Install gems
 RUN gem install bundler && bundle install
 
