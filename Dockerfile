@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 # Clone the Ruby_TestFrogmii project
 RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git .
 
-# Copy Gemfile and Gemfile.lock from the cloned project
-COPY Gemfile Gemfile.lock ./
+# Copy Gemfile and Gemfile.lock from the cloned project directory
+COPY Gemfile Gemfile.lock ./Ruby_TestFrogmii/
 
 # Install gems
 RUN gem install bundler && bundle install
