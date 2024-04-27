@@ -1,9 +1,10 @@
 require "active_support/core_ext/integer/time"
 
-Rails.application.config.hosts << "ruby-testfrogmii.onrender.com"
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  # Permitir la URL especificada en el entorno de desarrollo
+  config.hosts << "ruby-testfrogmii.onrender.com"
 
   # Code is not reloaded between requests.
   config.cache_classes = true
