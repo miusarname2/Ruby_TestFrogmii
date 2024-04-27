@@ -11,13 +11,11 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     git
 
-RUN ls
-
 # Clone the Ruby_TestFrogmii project
-RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git .
+RUN git clone https://github.com/miusarname2/Ruby_TestFrogmii.git . && ls
 
 # Copy Gemfile and Gemfile.lock from the cloned project directory
-COPY Ruby_TestFrogmii/Gemfile Ruby_TestFrogmii/Gemfile.lock /app/
+COPY Ruby_TestFrogmii/Gemfile Ruby_TestFrogmii/Gemfile.lock ./
 
 # Install gems
 RUN gem install bundler && bundle install
