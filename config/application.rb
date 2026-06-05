@@ -15,8 +15,7 @@ module Backend
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
-    "ruby-testfrogmii.onrender.com",
-    "https://ruby-testfrogmii.onrender.com"
+    "ruby-testfrogmii.onrender.com"
   ]
 
 
